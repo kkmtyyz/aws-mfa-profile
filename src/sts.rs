@@ -20,6 +20,6 @@ impl Sts {
             .token_code(token)
             .send()
             .await
-            .unwrap()
+            .expect("sts:get_session_token failed")
     }
 }
