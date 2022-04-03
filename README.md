@@ -2,14 +2,15 @@
 Call sts:GetSessionToken to update a specific profile in the credentials file.  
 
 ## Usage
-If you do not use the p option, the `default` profile is used.  
+If you do not use the `p` option, the `default` profile is used.  
+If you do not use the `m` option, the `mfa.json` file is used.  
 ```sh
 $ aws-mfa-profile -h
 
 aws-mfa-profile 
 
 USAGE:
-    aws-mfa-profile [OPTIONS] --mfa-file <MFA_FILE>
+    aws-mfa-profile [OPTIONS]
 
 OPTIONS:
     -c, --credentials-file <CREDENTIALS_FILE>
@@ -25,7 +26,7 @@ OPTIONS:
   {
     "profile": "your profile name in .aws/credentials",
     "serial": "your mfa device id",
-    "mfa_profile": "your profile name in .aws/credentials",
+    "mfa_profile": "your profile name in .aws/credentials"
   }
 ]
 ```
@@ -36,17 +37,17 @@ example
   {
     "profile": "default",
     "serial": "default_mfa_device_id",
-    "mfa_profile": "mfa",
+    "mfa_profile": "mfa"
   },
   {
     "profile": "dev",
     "serial": "dev_mfa_device_id",
-    "mfa_profile": "dev_mfa",
+    "mfa_profile": "dev_mfa"
   },
   {
     "profile": "prd",
     "serial": "prd_mfa_device_id",
-    "mfa_profile": "prd_admin_role",
+    "mfa_profile": "prd_admin_role"
   }
 ]
 ```
@@ -79,7 +80,6 @@ aws_secret_access_key = fuga_default
 aws_access_key_id = hoge_dev
 aws_secret_access_key = fuga_dev
 
-[dev_mfa]
 
 $ cat mfa.json
 [
@@ -90,8 +90,9 @@ $ cat mfa.json
   }
 ]
 
-$ aws-mfa-profile -p dev -m mfa.json
+$ aws-mfa-profile -p dev
 [input] token code: 123456
+Success! "credentials" file has been updated.
 
 $ cat credentials
 [default]

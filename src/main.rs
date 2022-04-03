@@ -15,7 +15,7 @@ struct Args {
     profile: Option<String>,
 
     #[clap(short, long)]
-    mfa_file: String,
+    mfa_file: Option<String>,
 
     #[clap(short, long)]
     credentials_file: Option<String>,
@@ -34,10 +34,14 @@ async fn get_config(profile: &Option<String>) -> SdkConfig {
 }
 
 /// return (serial, mfa_profile)
-fn get_serial(profile: Option<String>, mfa_file: String) -> (String, String) {
+fn get_serial(profile: Option<String>, mfa_file: Option<String>) -> (String, String) {
     let profile = match profile {
         Some(profile) => profile,
         None => String::from("default"),
+    };
+    let mfa_file = match mfa_file {
+        Some(mfa_file) => mfa_file,
+        None => String::from("mfa.json"),
     };
 
     let f = OpenOptions::new()
@@ -202,7 +206,10 @@ fn create_credentials_file_data(
         }
     } else {
         if !(writed_key && writed_skey && writed_token) {
-            panic!("create_credentials_file_data failed");
+            new_file_data.push(format!("[{}]", mfa_prof));
+            push_key(&mut new_file_data, key);
+            push_skey(&mut new_file_data, skey);
+            push_token(&mut new_file_data, token);
         }
     }
     new_file_data
@@ -256,4 +263,5 @@ async fn main() {
         None => String::from("credentials"),
     };
     create_credentials_file(&credentials_file, &sts_prof, &key, &skey, &token);
+    println!("Success! \"{}\" file has been updated.", credentials_file);
 }
