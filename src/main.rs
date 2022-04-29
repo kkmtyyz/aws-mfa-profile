@@ -22,6 +22,10 @@ struct Args {
     /// aws credentials file name [default: 'credentials']
     #[clap(short, long)]
     credentials_file: Option<String>,
+
+    /// the duration, in seconds, that the credentials should remain valid. [ex: 10800](3h)
+    #[clap(short, long)]
+    duration_seconds: Option<i32>,
 }
 
 async fn get_config(profile: &Option<String>) -> SdkConfig {
@@ -96,8 +100,15 @@ fn get_token() -> String {
 }
 
 /// return (access_key_id, secret_access_key, session_token)
-async fn get_session(sts: Sts, serial: String, token: String) -> (String, String, String) {
-    let resp: GetSessionTokenOutput = sts.get_session_token(&serial, &token).await;
+async fn get_session(
+    sts: Sts,
+    serial: String,
+    token: String,
+    duration_seconds: Option<i32>,
+) -> (String, String, String) {
+    let resp: GetSessionTokenOutput = sts
+        .get_session_token(&serial, &token, &duration_seconds)
+        .await;
     let credentials: &Credentials = resp.credentials().expect("get_session_token failed");
     // println!("{:#?}", credentials);
     let key = String::from(
@@ -256,7 +267,7 @@ async fn main() {
 
     let sts = Sts::new(&config);
     let token = get_token();
-    let (key, skey, token) = get_session(sts, serial, token).await;
+    let (key, skey, token) = get_session(sts, serial, token, args.duration_seconds).await;
     // println!("key  : {}", key);
     // println!("skey : {}", skey);
     // println!("token: {}", token);

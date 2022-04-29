@@ -13,10 +13,20 @@ USAGE:
     aws-mfa-profile [OPTIONS]
 
 OPTIONS:
-    -c, --credentials-file <CREDENTIALS_FILE>    aws credentials file name [default: 'credentials']
-    -h, --help                                   Print help information
-    -m, --mfa-file <MFA_FILE>                    mfa file name [default: 'mfa.json']
-    -p, --profile <PROFILE>                      aws profile name [default: 'default']
+    -c, --credentials-file <CREDENTIALS_FILE>
+            aws credentials file name [default: 'credentials']
+
+    -d, --duration-seconds <DURATION_SECONDS>
+            the duration, in seconds, that the credentials should remain valid. [ex: 10800](3h)
+
+    -h, --help
+            Print help information
+
+    -m, --mfa-file <MFA_FILE>
+            mfa file name [default: 'mfa.json']
+
+    -p, --profile <PROFILE>
+            aws profile name [default: 'default']
 ```
 
 ## MFA_FILE
