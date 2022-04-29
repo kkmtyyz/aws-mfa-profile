@@ -11,12 +11,15 @@ use std::io::{self, BufReader};
 
 #[derive(Parser, Debug)]
 struct Args {
+    /// aws profile name [default: 'default']
     #[clap(short, long)]
     profile: Option<String>,
 
+    /// mfa file name [default: 'mfa.json']
     #[clap(short, long)]
     mfa_file: Option<String>,
 
+    /// aws credentials file name [default: 'credentials']
     #[clap(short, long)]
     credentials_file: Option<String>,
 }
