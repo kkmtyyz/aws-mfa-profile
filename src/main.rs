@@ -1,9 +1,11 @@
-use aws_mfa_profile::Sts;
+mod sts;
+
 use aws_sdk_sts::model::Credentials;
 use aws_sdk_sts::output::GetSessionTokenOutput;
 use aws_types::SdkConfig;
 use clap::Parser;
 use serde_json::Value;
+use sts::Sts;
 
 use std::fs::{self, OpenOptions};
 use std::io::prelude::*;
