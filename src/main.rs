@@ -279,5 +279,5 @@ async fn main() {
         None => String::from("credentials"),
     };
     create_credentials_file(&credentials_file, &sts_prof, &key, &skey, &token);
-    println!("Success! \"{}\" file has been updated.", credentials_file);
+    println!("Success! Updated the credentials file: \"{}\"", credentials_file);
 }
